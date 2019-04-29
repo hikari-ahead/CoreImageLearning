@@ -12,6 +12,12 @@
 		82404B062276CB430013AA10 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 82404B042276CB430013AA10 /* Main.storyboard */; };
 		82404B082276CB450013AA10 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 82404B072276CB450013AA10 /* Assets.xcassets */; };
 		82404B0B2276CB450013AA10 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 82404B092276CB450013AA10 /* LaunchScreen.storyboard */; };
+		82404B142276CB4E0013AA10 /* LuminanceControlViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82404B122276CB4E0013AA10 /* LuminanceControlViewController.swift */; };
+		82404B152276CB4E0013AA10 /* OneSlideBaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82404B132276CB4E0013AA10 /* OneSlideBaseViewController.swift */; };
+		82404B172276CB740013AA10 /* a5.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 82404B162276CB740013AA10 /* a5.jpg */; };
+		82404B1A2276CC480013AA10 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 82404B192276CC480013AA10 /* CoreImage.framework */; };
+		82404B1C2276D0690013AA10 /* LeftTitleSilde.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82404B1B2276D0690013AA10 /* LeftTitleSilde.swift */; };
+		82404B212276D9D50013AA10 /* brightness.cikernel in Resources */ = {isa = PBXBuildFile; fileRef = 82404B202276D9D50013AA10 /* brightness.cikernel */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +28,13 @@
 		82404B072276CB450013AA10 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		82404B0A2276CB450013AA10 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		82404B0C2276CB450013AA10 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		82404B122276CB4E0013AA10 /* LuminanceControlViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LuminanceControlViewController.swift; sourceTree = "<group>"; };
+		82404B132276CB4E0013AA10 /* OneSlideBaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OneSlideBaseViewController.swift; sourceTree = "<group>"; };
+		82404B162276CB740013AA10 /* a5.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = a5.jpg; sourceTree = "<group>"; };
+		82404B192276CC480013AA10 /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
+		82404B1B2276D0690013AA10 /* LeftTitleSilde.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeftTitleSilde.swift; sourceTree = "<group>"; };
+		82404B202276D9D50013AA10 /* brightness.cikernel */ = {isa = PBXFileReference; explicitFileType = sourcecode.c; path = brightness.cikernel; sourceTree = "<group>"; };
+		82404B232276E0BA0013AA10 /* CoreImageLearning-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CoreImageLearning-Bridging-Header.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -29,6 +42,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				82404B1A2276CC480013AA10 /* CoreImage.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -40,6 +54,7 @@
 			children = (
 				82404AFF2276CB430013AA10 /* CoreImageLearning */,
 				82404AFE2276CB430013AA10 /* Products */,
+				82404B182276CC480013AA10 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -54,14 +69,44 @@
 		82404AFF2276CB430013AA10 /* CoreImageLearning */ = {
 			isa = PBXGroup;
 			children = (
+				82404B222276DCB00013AA10 /* ViewControllers */,
+				82404B1D2276D7230013AA10 /* CustomFilters */,
+				82404B162276CB740013AA10 /* a5.jpg */,
 				82404B002276CB430013AA10 /* AppDelegate.swift */,
 				82404B022276CB430013AA10 /* ViewController.swift */,
 				82404B042276CB430013AA10 /* Main.storyboard */,
 				82404B072276CB450013AA10 /* Assets.xcassets */,
 				82404B092276CB450013AA10 /* LaunchScreen.storyboard */,
 				82404B0C2276CB450013AA10 /* Info.plist */,
+				82404B232276E0BA0013AA10 /* CoreImageLearning-Bridging-Header.h */,
+				82404B1B2276D0690013AA10 /* LeftTitleSilde.swift */,
 			);
 			path = CoreImageLearning;
+			sourceTree = "<group>";
+		};
+		82404B182276CC480013AA10 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				82404B192276CC480013AA10 /* CoreImage.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		82404B1D2276D7230013AA10 /* CustomFilters */ = {
+			isa = PBXGroup;
+			children = (
+				82404B202276D9D50013AA10 /* brightness.cikernel */,
+			);
+			path = CustomFilters;
+			sourceTree = "<group>";
+		};
+		82404B222276DCB00013AA10 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				82404B122276CB4E0013AA10 /* LuminanceControlViewController.swift */,
+				82404B132276CB4E0013AA10 /* OneSlideBaseViewController.swift */,
+			);
+			path = ViewControllers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -96,6 +141,7 @@
 				TargetAttributes = {
 					82404AFC2276CB430013AA10 = {
 						CreatedOnToolsVersion = 10.2.1;
+						LastSwiftMigration = 1020;
 					};
 				};
 			};
@@ -125,6 +171,8 @@
 				82404B0B2276CB450013AA10 /* LaunchScreen.storyboard in Resources */,
 				82404B082276CB450013AA10 /* Assets.xcassets in Resources */,
 				82404B062276CB430013AA10 /* Main.storyboard in Resources */,
+				82404B212276D9D50013AA10 /* brightness.cikernel in Resources */,
+				82404B172276CB740013AA10 /* a5.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -135,7 +183,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				82404B1C2276D0690013AA10 /* LeftTitleSilde.swift in Sources */,
+				82404B152276CB4E0013AA10 /* OneSlideBaseViewController.swift in Sources */,
 				82404B032276CB430013AA10 /* ViewController.swift in Sources */,
+				82404B142276CB4E0013AA10 /* LuminanceControlViewController.swift in Sources */,
 				82404B012276CB430013AA10 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -282,6 +333,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = WFCHHM4YW4;
 				INFOPLIST_FILE = CoreImageLearning/Info.plist;
@@ -291,6 +343,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = resober.CoreImageLearning;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "CoreImageLearning/CoreImageLearning-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -300,6 +354,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = WFCHHM4YW4;
 				INFOPLIST_FILE = CoreImageLearning/Info.plist;
@@ -309,6 +364,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = resober.CoreImageLearning;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "CoreImageLearning/CoreImageLearning-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

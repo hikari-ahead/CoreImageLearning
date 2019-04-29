@@ -1,0 +1,19 @@
+kernel vec4 brightness(__sample image, float delta) {
+vec2 currPos = destCoord();
+vec4 currSample = image.rgba;
+float r = currSample[0];
+float g = currSample[1];
+float b = currSample[2];
+float a = currSample[3];
+r += delta;
+g += delta;
+b += delta;
+if (r > 1) r = 1;
+if (g > 1) g = 1;
+if (b > 1) b = 1;
+if (r < 0) r = 0;
+if (g < 0) g = 0;
+if (b < 0) b = 0;
+vec4 dst = vec4(r,g,b,a);
+return dst;
+}
