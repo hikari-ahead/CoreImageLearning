@@ -25,6 +25,7 @@ class LuminanceControlViewController: UIViewController {
         }
         return UIImage();
     }();
+    let imagePickerVC = UIImagePickerController.init();
     lazy var metalKitView:MetalKitView = {
         let tmp = MetalKitView();
         return tmp;
@@ -48,6 +49,8 @@ class LuminanceControlViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white;
         navigationItem.leftBarButtonItem = UIBarButtonItem.init(title: "返回", style: UIBarButtonItem.Style.plain, target: self, action: #selector(backItemClicked(sender:)));
+        navigationItem.rightBarButtonItem = UIBarButtonItem.init(title: "图片", style: UIBarButtonItem.Style.plain, target: self, action: #selector(replaceImageClicked(sender:)));
+
         setupViews();
         setupFilters();
         applyFilter(type: .Saturation, delta: 0.5);
@@ -158,5 +161,30 @@ class LuminanceControlViewController: UIViewController {
 
     @objc final func backItemClicked(sender:UIBarButtonItem) {
         navigationController?.popViewController(animated: true);
+    }
+
+    @objc final func replaceImageClicked(sender:UIBarButtonItem) {
+        imagePickerVC.delegate = self;
+        imagePickerVC.mediaTypes = ["public.image"];
+        imagePickerVC.sourceType = .photoLibrary;
+        self.present(imagePickerVC, animated: true, completion: nil);
+    }
+}
+
+extension LuminanceControlViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        let oriImage = info[.originalImage] as? UIImage;
+        let editedImage = info[.editedImage] as? UIImage;
+        guard oriImage != nil || editedImage != nil else {
+            self.dismiss(animated: true, completion: nil);
+            return;
+        }
+        self.srcImage = (editedImage != nil) ? editedImage! : oriImage!;
+        self.dismiss(animated: true, completion: nil);
+        applyFilter(type: .Luminance, delta: 0.5);
+    }
+
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+
     }
 }
