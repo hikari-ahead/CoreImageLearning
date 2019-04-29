@@ -18,6 +18,13 @@
 		82404B1A2276CC480013AA10 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 82404B192276CC480013AA10 /* CoreImage.framework */; };
 		82404B1C2276D0690013AA10 /* LeftTitleSilde.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82404B1B2276D0690013AA10 /* LeftTitleSilde.swift */; };
 		82404B212276D9D50013AA10 /* brightness.cikernel in Resources */ = {isa = PBXBuildFile; fileRef = 82404B202276D9D50013AA10 /* brightness.cikernel */; };
+		82404B272276FE260013AA10 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 82404B262276FE250013AA10 /* GLKit.framework */; };
+		82404B2C227704A90013AA10 /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 82404B2B227704A90013AA10 /* MetalKit.framework */; };
+		82404B2E227704B90013AA10 /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 82404B2D227704B90013AA10 /* Metal.framework */; };
+		82404B30227704EF0013AA10 /* MetalKitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82404B2F227704EF0013AA10 /* MetalKitView.swift */; };
+		82404B32227708DD0013AA10 /* MetalManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82404B31227708DD0013AA10 /* MetalManager.swift */; };
+		82404B34227710A50013AA10 /* contrast.cikernel in Resources */ = {isa = PBXBuildFile; fileRef = 82404B33227710A50013AA10 /* contrast.cikernel */; };
+		82404B36227713A80013AA10 /* saturation.cikernel in Resources */ = {isa = PBXBuildFile; fileRef = 82404B35227713A80013AA10 /* saturation.cikernel */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,6 +42,13 @@
 		82404B1B2276D0690013AA10 /* LeftTitleSilde.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeftTitleSilde.swift; sourceTree = "<group>"; };
 		82404B202276D9D50013AA10 /* brightness.cikernel */ = {isa = PBXFileReference; explicitFileType = sourcecode.c; path = brightness.cikernel; sourceTree = "<group>"; };
 		82404B232276E0BA0013AA10 /* CoreImageLearning-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CoreImageLearning-Bridging-Header.h"; sourceTree = "<group>"; };
+		82404B262276FE250013AA10 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
+		82404B2B227704A90013AA10 /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = System/Library/Frameworks/MetalKit.framework; sourceTree = SDKROOT; };
+		82404B2D227704B90013AA10 /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
+		82404B2F227704EF0013AA10 /* MetalKitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalKitView.swift; sourceTree = "<group>"; };
+		82404B31227708DD0013AA10 /* MetalManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalManager.swift; sourceTree = "<group>"; };
+		82404B33227710A50013AA10 /* contrast.cikernel */ = {isa = PBXFileReference; explicitFileType = sourcecode.c; path = contrast.cikernel; sourceTree = "<group>"; };
+		82404B35227713A80013AA10 /* saturation.cikernel */ = {isa = PBXFileReference; explicitFileType = sourcecode.c; path = saturation.cikernel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -42,6 +56,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				82404B2E227704B90013AA10 /* Metal.framework in Frameworks */,
+				82404B2C227704A90013AA10 /* MetalKit.framework in Frameworks */,
+				82404B272276FE260013AA10 /* GLKit.framework in Frameworks */,
 				82404B1A2276CC480013AA10 /* CoreImage.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -52,6 +69,7 @@
 		82404AF42276CB430013AA10 = {
 			isa = PBXGroup;
 			children = (
+				82404B31227708DD0013AA10 /* MetalManager.swift */,
 				82404AFF2276CB430013AA10 /* CoreImageLearning */,
 				82404AFE2276CB430013AA10 /* Products */,
 				82404B182276CC480013AA10 /* Frameworks */,
@@ -72,6 +90,8 @@
 				82404B222276DCB00013AA10 /* ViewControllers */,
 				82404B1D2276D7230013AA10 /* CustomFilters */,
 				82404B162276CB740013AA10 /* a5.jpg */,
+				82404B1B2276D0690013AA10 /* LeftTitleSilde.swift */,
+				82404B2F227704EF0013AA10 /* MetalKitView.swift */,
 				82404B002276CB430013AA10 /* AppDelegate.swift */,
 				82404B022276CB430013AA10 /* ViewController.swift */,
 				82404B042276CB430013AA10 /* Main.storyboard */,
@@ -79,7 +99,6 @@
 				82404B092276CB450013AA10 /* LaunchScreen.storyboard */,
 				82404B0C2276CB450013AA10 /* Info.plist */,
 				82404B232276E0BA0013AA10 /* CoreImageLearning-Bridging-Header.h */,
-				82404B1B2276D0690013AA10 /* LeftTitleSilde.swift */,
 			);
 			path = CoreImageLearning;
 			sourceTree = "<group>";
@@ -87,6 +106,9 @@
 		82404B182276CC480013AA10 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				82404B2D227704B90013AA10 /* Metal.framework */,
+				82404B2B227704A90013AA10 /* MetalKit.framework */,
+				82404B262276FE250013AA10 /* GLKit.framework */,
 				82404B192276CC480013AA10 /* CoreImage.framework */,
 			);
 			name = Frameworks;
@@ -96,6 +118,8 @@
 			isa = PBXGroup;
 			children = (
 				82404B202276D9D50013AA10 /* brightness.cikernel */,
+				82404B33227710A50013AA10 /* contrast.cikernel */,
+				82404B35227713A80013AA10 /* saturation.cikernel */,
 			);
 			path = CustomFilters;
 			sourceTree = "<group>";
@@ -170,9 +194,11 @@
 			files = (
 				82404B0B2276CB450013AA10 /* LaunchScreen.storyboard in Resources */,
 				82404B082276CB450013AA10 /* Assets.xcassets in Resources */,
+				82404B34227710A50013AA10 /* contrast.cikernel in Resources */,
 				82404B062276CB430013AA10 /* Main.storyboard in Resources */,
 				82404B212276D9D50013AA10 /* brightness.cikernel in Resources */,
 				82404B172276CB740013AA10 /* a5.jpg in Resources */,
+				82404B36227713A80013AA10 /* saturation.cikernel in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -184,9 +210,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				82404B1C2276D0690013AA10 /* LeftTitleSilde.swift in Sources */,
+				82404B30227704EF0013AA10 /* MetalKitView.swift in Sources */,
 				82404B152276CB4E0013AA10 /* OneSlideBaseViewController.swift in Sources */,
 				82404B032276CB430013AA10 /* ViewController.swift in Sources */,
 				82404B142276CB4E0013AA10 /* LuminanceControlViewController.swift in Sources */,
+				82404B32227708DD0013AA10 /* MetalManager.swift in Sources */,
 				82404B012276CB430013AA10 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -337,6 +365,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = WFCHHM4YW4;
 				INFOPLIST_FILE = CoreImageLearning/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -358,6 +387,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = WFCHHM4YW4;
 				INFOPLIST_FILE = CoreImageLearning/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

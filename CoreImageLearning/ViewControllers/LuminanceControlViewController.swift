@@ -7,6 +7,13 @@
 //
 
 import UIKit
+
+enum LCSOperationType {
+    case Luminance
+    case Contrast
+    case Saturation
+}
+
 let defaultLuminanceValue:Float = 0.5;
 let defaultContrastValue:Float = 0.5;
 let defaultSaturationValue:Float = 0.5;
@@ -18,13 +25,18 @@ class LuminanceControlViewController: UIViewController {
         }
         return UIImage();
     }();
-    lazy var imageView:UIImageView = {
-        let tmp = UIImageView.init(image: srcImage);
-        tmp.contentMode = UIView.ContentMode.scaleAspectFill;
+    lazy var metalKitView:MetalKitView = {
+        let tmp = MetalKitView();
         return tmp;
     }();
     var luminanceKernel: CIColorKernel!;
+    var contrastKernel: CIColorKernel!;
+    var saturationKernel: CIColorKernel!;
 
+    lazy var ciContext:CIContext = {
+        let context = CIContext(options:nil);
+        return context;
+    }();
 
     let luminanceSlide = LeftTitleSilde.init(title: "Luminance", minVal: 0, maxVal: 1.0, currVal: defaultLuminanceValue);
     let contrastSlide = LeftTitleSilde.init(title: "Contrast", minVal: 0, maxVal: 1.0, currVal: defaultContrastValue);
@@ -38,6 +50,7 @@ class LuminanceControlViewController: UIViewController {
         navigationItem.leftBarButtonItem = UIBarButtonItem.init(title: "返回", style: UIBarButtonItem.Style.plain, target: self, action: #selector(backItemClicked(sender:)));
         setupViews();
         setupFilters();
+        applyFilter(type: .Saturation, delta: 0.5);
     }
 
     final func setupViews() {
@@ -45,12 +58,12 @@ class LuminanceControlViewController: UIViewController {
         if #available(iOS 11.0, *) {
             top += self.navigationController!.view.safeAreaInsets.top;
         }
-        imageView.frame = CGRect.init(x: 0, y: top, width: view.frame.size.width, height: view.frame.size.width);
-        view.addSubview(imageView);
+        metalKitView.frame = CGRect.init(x: 0, y: top, width: view.frame.size.width, height: view.frame.size.width);
+        view.addSubview(metalKitView);
 
         let horizMargin:CGFloat = 0;
         let topMargin:CGFloat = 35.0;
-        let imageViewBottom = imageView.frame.size.height + imageView.frame.origin.y;
+        let imageViewBottom = metalKitView.frame.size.height + metalKitView.frame.origin.y;
         luminanceSlide.frame = CGRect.init(x: horizMargin, y: imageViewBottom + topMargin, width: view.frame.size.width - 2 * horizMargin, height: 44.0);
         luminanceSlide.slider.addTarget(self, action: #selector(sliderValueChanged(sender:)), for: UIControl.Event.valueChanged);
         view.addSubview(luminanceSlide);
@@ -73,33 +86,52 @@ class LuminanceControlViewController: UIViewController {
     }
 
     func setupFilters() {
-        let url = Bundle.main.url(forResource: "brightness", withExtension: "cikernel")!;
+        let lUrl = Bundle.main.url(forResource: "brightness", withExtension: "cikernel")!;
+        let cUrl = Bundle.main.url(forResource: "contrast", withExtension: "cikernel")!;
+        let sUrl = Bundle.main.url(forResource: "saturation", withExtension: "cikernel")!;
+
         do {
-            let filterCodeString = try String.init(contentsOf: url);
-            luminanceKernel = CIColorKernel.init(source: filterCodeString)!;
+            let lFilterCodeString = try String.init(contentsOf: lUrl);
+            luminanceKernel = CIColorKernel.init(source: lFilterCodeString)!;
+
+            let cFilterCodeString = try String.init(contentsOf: cUrl);
+            contrastKernel = CIColorKernel.init(source: cFilterCodeString)!;
+
+            let sFilterCodeString = try String.init(contentsOf: sUrl);
+            saturationKernel = CIColorKernel.init(source: sFilterCodeString)!;
+
         } catch {
             print(error);
         }
     }
 
-
-    final func applyLuminanceFilter(delta:Float) {
+    final func applyFilter(type:LCSOperationType, delta:Float) {
         let srcCIImage = CIImage.init(image: srcImage);
         guard srcCIImage != nil else {
             return;
         }
-        DispatchQueue.global().async {
-            let dst = self.luminanceKernel.apply(extent: srcCIImage!.extent, roiCallback: { (idx, rect) -> CGRect in
+        var kernel:CIKernel?
+        switch type {
+        case .Contrast:
+            kernel = contrastKernel;
+            break;
+        case .Luminance:
+            kernel = luminanceKernel;
+            break;
+        case .Saturation:
+            kernel = saturationKernel;
+            break;
+        }
+        guard kernel != nil else {
+            return;
+        }
+        DispatchQueue.main.async {
+            let dst = kernel!.apply(extent: srcCIImage!.extent, roiCallback: { (idx, rect) -> CGRect in
                 return rect;
             }, arguments: [srcCIImage!, delta]);
-            if (dst != nil) {
-                // use dst.extent to prohibt scaled
-                let context = CIContext(options:nil)
-                let cgimg = context.createCGImage(dst!, from: dst!.extent);
-                let newImage = UIImage(cgImage: cgimg!)
-                DispatchQueue.main.async {
-                    self.imageView.image = newImage;
-                }
+            if (dst != nil && MetalManager.shared.mtDevice != nil) {
+                self.metalKitView.render(image: dst!, context: self.ciContext, device: MetalManager.shared.mtDevice!);
+                self.metalKitView.setNeedsDisplay();
             }
         }
     }
@@ -112,7 +144,14 @@ class LuminanceControlViewController: UIViewController {
 
     @objc final func sliderValueChanged(sender:UISlider) {
         if (sender == luminanceSlide.slider) {
-            applyLuminanceFilter(delta: sender.value - defaultLuminanceValue);
+            let delta = sender.value - defaultLuminanceValue;
+            applyFilter(type: .Luminance, delta: delta);
+        } else if (sender == contrastSlide.slider) {
+            let delta = sender.value - defaultContrastValue;
+            applyFilter(type: .Contrast, delta: delta);
+        } else if (sender == saturationSlide.slider) {
+            let delta = sender.value;
+            applyFilter(type: .Saturation, delta: delta);
         }
 
     }

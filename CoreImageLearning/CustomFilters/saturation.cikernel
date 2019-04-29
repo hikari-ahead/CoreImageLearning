@@ -1,0 +1,29 @@
+kernel vec4 brightness(__sample image, float delta) {
+vec2 currPos = destCoord();
+vec4 currSample = image.rgba;
+float r = currSample[0];
+float g = currSample[1];
+float b = currSample[2];
+float a = currSample[3];
+float contrast = 1 + delta;
+float luminance = 0.2125 * r + 0.7154 * g + 0.0721 * b;
+// delta 0.0 ~ 1.0
+// saturation 0.0~3.0 default 1.0
+float saturation = 0;
+if (delta > 0.5) {
+    saturation = 3.0 * delta;
+} else {
+    saturation = 2.0 * delta;
+}
+r = (1.0 - saturation) * luminance + saturation * r;
+g = (1.0 - saturation) * luminance + saturation * g;
+b = (1.0 - saturation) * luminance + saturation * b;
+if (r > 1) r = 1;
+if (g > 1) g = 1;
+if (b > 1) b = 1;
+if (r < 0) r = 0;
+if (g < 0) g = 0;
+if (b < 0) b = 0;
+vec4 dst = vec4(r,g,b,a);
+return dst;
+}
