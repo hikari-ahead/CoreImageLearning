@@ -22,7 +22,8 @@ class ViewController: UIViewController {
 
     final func setupData() {
         commands = [
-            ("Luminance Contrast Saturation", NSStringFromClass(LuminanceControlViewController.self))
+            ("Luminance Contrast Saturation", NSStringFromClass(LuminanceControlViewController.self)),
+             ("Built-in Filters", NSStringFromClass(FilterListViewController.self)),
         ];
     }
 

@@ -26,6 +26,9 @@
 		82404B34227710A50013AA10 /* contrast.cikernel in Resources */ = {isa = PBXBuildFile; fileRef = 82404B33227710A50013AA10 /* contrast.cikernel */; };
 		82404B36227713A80013AA10 /* saturation.cikernel in Resources */ = {isa = PBXBuildFile; fileRef = 82404B35227713A80013AA10 /* saturation.cikernel */; };
 		82FB4BAD2277F90900657B32 /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 82FB4BAC2277F90900657B32 /* Photos.framework */; };
+		82FB4BAF22782B9700657B32 /* FilterListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82FB4BAE22782B9700657B32 /* FilterListViewController.swift */; };
+		82FB4BB322782ECA00657B32 /* FilterListCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82FB4BB222782ECA00657B32 /* FilterListCollectionViewCell.swift */; };
+		82FB4BB622784F3500657B32 /* Commons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82FB4BB522784F3500657B32 /* Commons.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -51,6 +54,10 @@
 		82404B33227710A50013AA10 /* contrast.cikernel */ = {isa = PBXFileReference; explicitFileType = sourcecode.c; path = contrast.cikernel; sourceTree = "<group>"; };
 		82404B35227713A80013AA10 /* saturation.cikernel */ = {isa = PBXFileReference; explicitFileType = sourcecode.c; path = saturation.cikernel; sourceTree = "<group>"; };
 		82FB4BAC2277F90900657B32 /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
+		82FB4BAE22782B9700657B32 /* FilterListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterListViewController.swift; sourceTree = "<group>"; };
+		82FB4BB222782ECA00657B32 /* FilterListCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterListCollectionViewCell.swift; sourceTree = "<group>"; };
+		82FB4BB42278398D00657B32 /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MyPlayground.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		82FB4BB522784F3500657B32 /* Commons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Commons.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,7 +79,7 @@
 		82404AF42276CB430013AA10 = {
 			isa = PBXGroup;
 			children = (
-				82404B31227708DD0013AA10 /* MetalManager.swift */,
+				82FB4BB42278398D00657B32 /* MyPlayground.playground */,
 				82404AFF2276CB430013AA10 /* CoreImageLearning */,
 				82404AFE2276CB430013AA10 /* Products */,
 				82404B182276CC480013AA10 /* Frameworks */,
@@ -90,6 +97,8 @@
 		82404AFF2276CB430013AA10 /* CoreImageLearning */ = {
 			isa = PBXGroup;
 			children = (
+				82404B31227708DD0013AA10 /* MetalManager.swift */,
+				82FB4BB022782E9E00657B32 /* Views */,
 				82404B222276DCB00013AA10 /* ViewControllers */,
 				82404B1D2276D7230013AA10 /* CustomFilters */,
 				82404B162276CB740013AA10 /* a5.jpg */,
@@ -102,6 +111,7 @@
 				82404B092276CB450013AA10 /* LaunchScreen.storyboard */,
 				82404B0C2276CB450013AA10 /* Info.plist */,
 				82404B232276E0BA0013AA10 /* CoreImageLearning-Bridging-Header.h */,
+				82FB4BB522784F3500657B32 /* Commons.swift */,
 			);
 			path = CoreImageLearning;
 			sourceTree = "<group>";
@@ -132,9 +142,26 @@
 			isa = PBXGroup;
 			children = (
 				82404B122276CB4E0013AA10 /* LuminanceControlViewController.swift */,
+				82FB4BAE22782B9700657B32 /* FilterListViewController.swift */,
 				82404B132276CB4E0013AA10 /* OneSlideBaseViewController.swift */,
 			);
 			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		82FB4BB022782E9E00657B32 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				82FB4BB122782EAE00657B32 /* Cells */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		82FB4BB122782EAE00657B32 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				82FB4BB222782ECA00657B32 /* FilterListCollectionViewCell.swift */,
+			);
+			path = Cells;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -215,6 +242,9 @@
 			files = (
 				82404B1C2276D0690013AA10 /* LeftTitleSilde.swift in Sources */,
 				82404B30227704EF0013AA10 /* MetalKitView.swift in Sources */,
+				82FB4BB622784F3500657B32 /* Commons.swift in Sources */,
+				82FB4BAF22782B9700657B32 /* FilterListViewController.swift in Sources */,
+				82FB4BB322782ECA00657B32 /* FilterListCollectionViewCell.swift in Sources */,
 				82404B152276CB4E0013AA10 /* OneSlideBaseViewController.swift in Sources */,
 				82404B032276CB430013AA10 /* ViewController.swift in Sources */,
 				82404B142276CB4E0013AA10 /* LuminanceControlViewController.swift in Sources */,
