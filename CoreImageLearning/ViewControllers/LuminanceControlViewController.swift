@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Photos
 
 enum LCSOperationType {
     case Luminance
@@ -43,7 +44,8 @@ class LuminanceControlViewController: UIViewController {
     let contrastSlide = LeftTitleSilde.init(title: "Contrast", minVal: 0, maxVal: 1.0, currVal: defaultContrastValue);
     let saturationSlide = LeftTitleSilde.init(title: "saturation", minVal: 0, maxVal: 1.0, currVal: defaultSaturationValue);
 
-    let linearSwitch = UISwitch();
+    let applyButton = UIButton();
+    let saveToAlbumButton = UIButton();
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -81,11 +83,17 @@ class LuminanceControlViewController: UIViewController {
         saturationSlide.slider.addTarget(self, action: #selector(sliderValueChanged(sender:)), for: UIControl.Event.valueChanged);
         view.addSubview(saturationSlide);
 
-        linearSwitch.isOn = false;
         let saturationSlideBottom:CGFloat = saturationSlide.frame.origin.y + saturationSlide.frame.size.height;
-        linearSwitch.frame = CGRect.init(x: saturationSlide.titleLabel.frame.origin.x, y: saturationSlideBottom + topMargin, width: 100.0, height: 44.0);
-        linearSwitch.addTarget(self, action: #selector(switchValueChanged(sender:)), for: UIControl.Event.valueChanged);
-        view.addSubview(linearSwitch);
+        applyButton.setTitleColor(.black, for: .normal);
+        saveToAlbumButton.setTitleColor(.black, for: .normal);
+        applyButton.setTitle("Apply", for: .normal);
+        saveToAlbumButton.setTitle("Save To Album", for: .normal);
+        applyButton.frame = CGRect.init(x: saturationSlide.titleLabel.frame.origin.x, y: saturationSlideBottom + topMargin, width: 100, height: 44);
+        saveToAlbumButton.frame = CGRect.init(x: applyButton.frame.origin.x + applyButton.frame.size.width + horizMargin, y: saturationSlideBottom + topMargin, width: 200, height: 44);
+        view.addSubview(applyButton);
+        view.addSubview(saveToAlbumButton);
+        applyButton.addTarget(self, action: #selector(applyButtonClicked(sender:)), for: .touchUpInside);
+        saveToAlbumButton.addTarget(self, action: #selector(saveToAlbumButtonClicked(sender:)), for: .touchUpInside);
     }
 
     func setupFilters() {
@@ -169,6 +177,47 @@ class LuminanceControlViewController: UIViewController {
         imagePickerVC.sourceType = .photoLibrary;
         self.present(imagePickerVC, animated: true, completion: nil);
     }
+
+    @objc final func applyButtonClicked(sender:UIButton) {
+        guard metalKitView.mtTexture != nil else {
+            return;
+        }
+        if let image = metalKitView.getUIImage(texture: metalKitView.mtTexture!, context: ciContext, orientation: srcImage.imageOrientation) {
+            srcImage = image;
+            applyButton.setTitle("success", for: .normal);
+            applyButton.setTitleColor(.green, for: .normal);
+            applyButton.isEnabled = false;
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                self.applyButton.setTitle("Apply", for: .normal);
+                self.applyButton.setTitleColor(.black, for: .normal);
+                self.applyButton.isEnabled = true;
+            }
+        }
+    }
+
+    @objc final func saveToAlbumButtonClicked(sender:UIButton) {
+        if let image = metalKitView.getUIImage(texture: metalKitView.mtTexture!, context: ciContext, orientation: srcImage.imageOrientation) {
+            PHPhotoLibrary.shared().performChanges({
+                PHAssetChangeRequest.creationRequestForAsset(from: image);
+            }) { (success, error) in
+                if (error != nil) {
+                    print(error!);
+                } else {
+                    print("saved");
+                    DispatchQueue.main.async {
+                        self.saveToAlbumButton.setTitle("success", for: .normal);
+                        self.saveToAlbumButton.setTitleColor(.green, for: .normal);
+                        self.saveToAlbumButton.isEnabled = false;
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                            self.saveToAlbumButton.setTitle("Save To Album", for: .normal);
+                            self.saveToAlbumButton.setTitleColor(.black, for: .normal);
+                            self.saveToAlbumButton.isEnabled = true;
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 extension LuminanceControlViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
@@ -180,8 +229,9 @@ extension LuminanceControlViewController: UIImagePickerControllerDelegate, UINav
             return;
         }
         self.srcImage = (editedImage != nil) ? editedImage! : oriImage!;
-        self.dismiss(animated: true, completion: nil);
-        applyFilter(type: .Luminance, delta: 0.5);
+        self.dismiss(animated: true, completion: {()-> Void in
+            self.applyFilter(type: .Luminance, delta: 0);
+        });
     }
 
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {

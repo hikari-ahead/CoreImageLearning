@@ -25,6 +25,7 @@
 		82404B32227708DD0013AA10 /* MetalManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82404B31227708DD0013AA10 /* MetalManager.swift */; };
 		82404B34227710A50013AA10 /* contrast.cikernel in Resources */ = {isa = PBXBuildFile; fileRef = 82404B33227710A50013AA10 /* contrast.cikernel */; };
 		82404B36227713A80013AA10 /* saturation.cikernel in Resources */ = {isa = PBXBuildFile; fileRef = 82404B35227713A80013AA10 /* saturation.cikernel */; };
+		82FB4BAD2277F90900657B32 /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 82FB4BAC2277F90900657B32 /* Photos.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -49,6 +50,7 @@
 		82404B31227708DD0013AA10 /* MetalManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalManager.swift; sourceTree = "<group>"; };
 		82404B33227710A50013AA10 /* contrast.cikernel */ = {isa = PBXFileReference; explicitFileType = sourcecode.c; path = contrast.cikernel; sourceTree = "<group>"; };
 		82404B35227713A80013AA10 /* saturation.cikernel */ = {isa = PBXFileReference; explicitFileType = sourcecode.c; path = saturation.cikernel; sourceTree = "<group>"; };
+		82FB4BAC2277F90900657B32 /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +58,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				82FB4BAD2277F90900657B32 /* Photos.framework in Frameworks */,
 				82404B2E227704B90013AA10 /* Metal.framework in Frameworks */,
 				82404B2C227704A90013AA10 /* MetalKit.framework in Frameworks */,
 				82404B272276FE260013AA10 /* GLKit.framework in Frameworks */,
@@ -106,6 +109,7 @@
 		82404B182276CC480013AA10 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				82FB4BAC2277F90900657B32 /* Photos.framework */,
 				82404B2D227704B90013AA10 /* Metal.framework */,
 				82404B2B227704A90013AA10 /* MetalKit.framework */,
 				82404B262276FE250013AA10 /* GLKit.framework */,

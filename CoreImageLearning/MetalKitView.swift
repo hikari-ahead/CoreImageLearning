@@ -35,7 +35,7 @@ class MetalKitView: MTKView {
     }
 
     func render(image: CIImage, context: CIContext, device: MTLDevice) {
-//        #if !targetEnvironment(simulator)
+        #if !targetEnvironment(simulator)
         self.ciContext = context;
         self.device = device;
 
@@ -53,6 +53,27 @@ class MetalKitView: MTKView {
         self.ciContext?.render(filteredImage, to: self.currentDrawable!.texture, commandBuffer: buffer, bounds: CGRect.init(x: x, y: y, width: self.drawableSize.width, height: self.drawableSize.height), colorSpace: CGColorSpaceCreateDeviceRGB());
         buffer.present(self.currentDrawable!)
         buffer.commit();
-//        #endif
+        #else
+        print("metal support arm64 devices only.");
+        #endif
+    }
+
+    func getUIImage(texture: MTLTexture, context: CIContext, orientation:UIImage.Orientation)-> UIImage? {
+        let options = [CIImageOption.colorSpace: CGColorSpaceCreateDeviceRGB(),
+                      CIContextOption.outputPremultiplied: true,
+                      CIContextOption.useSoftwareRenderer: false] as! [CIImageOption : Any];
+        if var ciImageFromTexture = CIImage.init(mtlTexture: texture, options: options) {
+            // vertical flip again due to from texture
+            ciImageFromTexture = ciImageFromTexture.transformed(by: CGAffineTransform.init(translationX: 0, y: -ciImageFromTexture.extent.size.height));
+            ciImageFromTexture = ciImageFromTexture.transformed(by: CGAffineTransform.init(scaleX: 1, y: -1));
+            if let cgImage = context.createCGImage(ciImageFromTexture, from: ciImageFromTexture.extent) {
+                let image = UIImage.init(cgImage: cgImage, scale: 1, orientation: orientation);
+                return image;
+            } else {
+                return nil;
+            }
+        } else {
+            return nil;
+        }
     }
 }
