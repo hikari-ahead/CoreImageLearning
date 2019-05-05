@@ -18,15 +18,7 @@ enum LCSOperationType {
 let defaultLuminanceValue:Float = 0.5;
 let defaultContrastValue:Float = 0.5;
 let defaultSaturationValue:Float = 0.5;
-class LuminanceControlViewController: UIViewController {
-    lazy var srcImage:UIImage = {
-        let path = Bundle.main.path(forResource: "a5", ofType: "jpg");
-        if (path != nil) {
-            return UIImage.init(contentsOfFile: path!)!;
-        }
-        return UIImage();
-    }();
-    let imagePickerVC = UIImagePickerController.init();
+class LuminanceControlViewController: BaseViewController {
     lazy var metalKitView:MetalKitView = {
         let tmp = MetalKitView();
         return tmp;
@@ -34,11 +26,6 @@ class LuminanceControlViewController: UIViewController {
     var luminanceKernel: CIColorKernel!;
     var contrastKernel: CIColorKernel!;
     var saturationKernel: CIColorKernel!;
-
-    lazy var ciContext:CIContext = {
-        let context = CIContext(options:nil);
-        return context;
-    }();
 
     let luminanceSlide = LeftTitleSilde.init(title: "Luminance", minVal: 0, maxVal: 1.0, currVal: defaultLuminanceValue);
     let contrastSlide = LeftTitleSilde.init(title: "Contrast", minVal: 0, maxVal: 1.0, currVal: defaultContrastValue);
@@ -51,8 +38,9 @@ class LuminanceControlViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white;
         navigationItem.leftBarButtonItem = UIBarButtonItem.init(title: "返回", style: UIBarButtonItem.Style.plain, target: self, action: #selector(backItemClicked(sender:)));
-        navigationItem.rightBarButtonItem = UIBarButtonItem.init(title: "图片", style: UIBarButtonItem.Style.plain, target: self, action: #selector(replaceImageClicked(sender:)));
-
+        self.imagePickerDissmissCompletionBlock = {()-> Void in
+            self.applyFilter(type: .Luminance, delta: 0);
+        };
         setupViews();
         setupFilters();
         applyFilter(type: .Saturation, delta: 0.5);
@@ -171,18 +159,11 @@ class LuminanceControlViewController: UIViewController {
         navigationController?.popViewController(animated: true);
     }
 
-    @objc final func replaceImageClicked(sender:UIBarButtonItem) {
-        imagePickerVC.delegate = self;
-        imagePickerVC.mediaTypes = ["public.image"];
-        imagePickerVC.sourceType = .photoLibrary;
-        self.present(imagePickerVC, animated: true, completion: nil);
-    }
-
     @objc final func applyButtonClicked(sender:UIButton) {
-        guard metalKitView.mtTexture != nil else {
+        guard metalKitView.currentDrawable != nil else {
             return;
         }
-        if let image = metalKitView.getUIImage(texture: metalKitView.mtTexture!, context: ciContext, orientation: srcImage.imageOrientation) {
+        if let image = metalKitView.getUIImage(texture: metalKitView.currentDrawable!.texture, context: ciContext, orientation: srcImage.imageOrientation) {
             srcImage = image;
             applyButton.setTitle("success", for: .normal);
             applyButton.setTitleColor(.green, for: .normal);
@@ -196,7 +177,7 @@ class LuminanceControlViewController: UIViewController {
     }
 
     @objc final func saveToAlbumButtonClicked(sender:UIButton) {
-        if let image = metalKitView.getUIImage(texture: metalKitView.mtTexture!, context: ciContext, orientation: srcImage.imageOrientation) {
+        if let image = metalKitView.getUIImage(texture: metalKitView.currentDrawable!.texture, context: ciContext, orientation: srcImage.imageOrientation) {
             PHPhotoLibrary.shared().performChanges({
                 PHAssetChangeRequest.creationRequestForAsset(from: image);
             }) { (success, error) in
@@ -220,21 +201,3 @@ class LuminanceControlViewController: UIViewController {
     }
 }
 
-extension LuminanceControlViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        let oriImage = info[.originalImage] as? UIImage;
-        let editedImage = info[.editedImage] as? UIImage;
-        guard oriImage != nil || editedImage != nil else {
-            self.dismiss(animated: true, completion: nil);
-            return;
-        }
-        self.srcImage = (editedImage != nil) ? editedImage! : oriImage!;
-        self.dismiss(animated: true, completion: {()-> Void in
-            self.applyFilter(type: .Luminance, delta: 0);
-        });
-    }
-
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-
-    }
-}

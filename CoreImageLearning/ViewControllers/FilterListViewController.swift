@@ -9,12 +9,18 @@
 import UIKit
 import CoreImage
 
-class FilterListViewController: UIViewController {
+class FilterListViewController: BaseViewController {
 
     var collectionView:UICollectionView!;
+    var cachedFilterImageDict:Dictionary<FilterNames, CIImage>!;
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        cachedFilterImageDict = [:];
+        self.imagePickerDissmissCompletionBlock = {[weak self] ()-> Void in
+            self?.cachedFilterImageDict.removeAll(keepingCapacity: true);
+            self?.collectionView.reloadData();
+        };
         view.backgroundColor = .white;
         setupViews();
     }
@@ -27,8 +33,9 @@ class FilterListViewController: UIViewController {
         let f = CGRect.init(x: 0, y: top, width: view.frame.size.width, height: view.frame.size.height - top);
         let layout = UICollectionViewFlowLayout();
         let gap:CGFloat = 5;
-        let perWidth = (view.frame.size.width - 4 * gap) / 3.0;
-        layout.itemSize = CGSize.init(width: perWidth, height: perWidth);
+        let perWidth = (view.frame.size.width - 3 * gap) / 2.0;
+        // perWidth + 25 = imageView.size.height + label.size.height
+        layout.itemSize = CGSize.init(width: perWidth, height: perWidth + 25);
         layout.estimatedItemSize = layout.itemSize;
         layout.minimumLineSpacing = gap;
         layout.minimumInteritemSpacing = gap / 2.0;
@@ -41,6 +48,28 @@ class FilterListViewController: UIViewController {
         view.addSubview(collectionView);
     }
 
+    func getFilteredImage(filterName:FilterNames, srcImage:UIImage, completionBlock:@escaping ((_ filterName:FilterNames,_ filterImage:CIImage?)->Void)) {
+        DispatchQueue.global().async {
+            let ciImage = CIImage.init(image: srcImage);
+            guard ciImage != nil else {
+                completionBlock(filterName, nil);
+                return;
+            }
+            switch filterName {
+            case .CIOriginal:
+                completionBlock(filterName, ciImage!);
+                break;
+            case .CIBoxBlur:
+                let filter = CIFilter.init(name: filterName.rawValue, parameters: [kCIInputImageKey: ciImage as Any, kCIInputRadiusKey: 20.0]);
+                let optCIImage = filter?.outputImage;
+                completionBlock(filterName, optCIImage!);
+                break;
+            default:
+                completionBlock(filterName, nil);
+                break;
+            }
+        }
+    }
 }
 
 extension FilterListViewController: UICollectionViewDataSource {
@@ -57,7 +86,20 @@ extension FilterListViewController: UICollectionViewDataSource {
         if (cell == nil) {
             cell = FilterListCollectionViewCell();
         }
-        cell!.config(image: nil, title: gFilterNamesArray[indexPath.row].rawValue);
+        let filterName = gFilterNamesArray[indexPath.row];
+        if (self.cachedFilterImageDict[filterName] != nil) {
+            cell?.config(image: self.cachedFilterImageDict[filterName], title: filterName.rawValue, context: ciContext, device: MetalManager.shared.mtDevice);
+        } else {
+            cell?.config(image: nil, title: filterName.rawValue, context: ciContext, device:nil);
+            self.getFilteredImage(filterName: filterName, srcImage: srcImage, completionBlock: { [weak cell, weak self] (filterName:FilterNames, filterImage:CIImage?) in
+                if filterImage != nil {
+                    self?.cachedFilterImageDict[filterName] = filterImage;
+                }
+                DispatchQueue.main.async {
+                    cell?.config(image: filterImage, title: filterName.rawValue, context: (self?.ciContext)!, device: MetalManager.shared.mtDevice!);
+                };
+            });
+        }
         return cell!;
     }
 

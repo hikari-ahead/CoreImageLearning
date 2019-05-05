@@ -10,6 +10,7 @@ import Foundation
 
 enum FilterNames:String {
     typealias RawValue = String
+    case CIOriginal = "Original"
     case CIBoxBlur = "CIBoxBlur"
     case CIDiscBlur = "CIDiscBlur"
     case CIGaussianBlur = "CIGaussianBlur"
@@ -187,6 +188,7 @@ enum FilterNames:String {
 }
 
 let gFilterNamesArray = [
+    FilterNames.CIOriginal,
     FilterNames.CIBoxBlur,
     FilterNames.CIDiscBlur,
     FilterNames.CIGaussianBlur,

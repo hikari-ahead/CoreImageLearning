@@ -14,24 +14,26 @@ import AVFoundation
 class MetalKitView: MTKView {
     private var commandQueue: MTLCommandQueue?;
     private var ciContext: CIContext?
-    var mtTexture: MTLTexture?
 
     required init(coder: NSCoder) {
         super.init(coder: coder);
-        self.isOpaque = false;
-        self.enableSetNeedsDisplay = true;
+        commonSetup();
     }
 
     override init(frame frameRect: CGRect, device: MTLDevice?) {
         super.init(frame: frameRect, device: device);
-        self.framebufferOnly = false;
-        self.isOpaque = false;
-        self.enableSetNeedsDisplay = true;
+        commonSetup();
     }
 
     init() {
         self.init(frame: .zero);
 
+    }
+
+    func commonSetup() {
+        self.framebufferOnly = false;
+        self.isOpaque = false;
+        self.enableSetNeedsDisplay = true;
     }
 
     func render(image: CIImage, context: CIContext, device: MTLDevice) {
@@ -47,12 +49,13 @@ class MetalKitView: MTKView {
         let y = -bounds.origin.y;
 
         self.commandQueue = device.makeCommandQueue();
-
         let buffer = self.commandQueue!.makeCommandBuffer()!;
-        self.mtTexture = self.currentDrawable!.texture;
-        self.ciContext?.render(filteredImage, to: self.currentDrawable!.texture, commandBuffer: buffer, bounds: CGRect.init(x: x, y: y, width: self.drawableSize.width, height: self.drawableSize.height), colorSpace: CGColorSpaceCreateDeviceRGB());
-        buffer.present(self.currentDrawable!)
-        buffer.commit();
+        if (self.currentDrawable != nil) {
+            self.ciContext?.render(filteredImage, to: self.currentDrawable!.texture, commandBuffer: buffer, bounds: CGRect.init(x: x, y: y, width: self.drawableSize.width, height: self.drawableSize.height), colorSpace: CGColorSpaceCreateDeviceRGB());
+            buffer.present(self.currentDrawable!)
+            buffer.commit();
+            releaseDrawables();
+        }
         #else
         print("metal support arm64 devices only.");
         #endif
