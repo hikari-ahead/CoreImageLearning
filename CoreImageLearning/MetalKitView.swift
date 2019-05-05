@@ -43,18 +43,23 @@ class MetalKitView: MTKView {
 
         var bounds = self.bounds;
         bounds.size = self.drawableSize;
-        bounds = AVMakeRect(aspectRatio: image.extent.size, insideRect: bounds);
-        let filteredImage = image.transformed(by: CGAffineTransform.init(scaleX: bounds.size.width / image.extent.size.width, y: bounds.size.height / image.extent.size.height));
-        let x = -bounds.origin.x;
-        let y = -bounds.origin.y;
+        DispatchQueue.global().async {
+            bounds = AVMakeRect(aspectRatio: image.extent.size, insideRect: bounds);
+            let filteredImage = image.transformed(by: CGAffineTransform.init(scaleX: bounds.size.width / image.extent.size.width, y: bounds.size.height / image.extent.size.height));
+            let x = -bounds.origin.x;
+            let y = -bounds.origin.y;
 
-        self.commandQueue = device.makeCommandQueue();
-        let buffer = self.commandQueue!.makeCommandBuffer()!;
-        if (self.currentDrawable != nil) {
-            self.ciContext?.render(filteredImage, to: self.currentDrawable!.texture, commandBuffer: buffer, bounds: CGRect.init(x: x, y: y, width: self.drawableSize.width, height: self.drawableSize.height), colorSpace: CGColorSpaceCreateDeviceRGB());
-            buffer.present(self.currentDrawable!)
-            buffer.commit();
-            releaseDrawables();
+            self.commandQueue = device.makeCommandQueue();
+            let buffer = self.commandQueue!.makeCommandBuffer()!;
+            if (self.currentDrawable != nil) {
+                self.ciContext?.render(filteredImage, to: self.currentDrawable!.texture, commandBuffer: buffer, bounds: CGRect.init(x: x, y: y, width: self.drawableSize.width, height: self.drawableSize.height), colorSpace: CGColorSpaceCreateDeviceRGB());
+                buffer.present(self.currentDrawable!)
+                buffer.commit();
+                self.releaseDrawables();
+                DispatchQueue.main.async {
+                    self.setNeedsDisplay();
+                }
+            }
         }
         #else
         print("metal support arm64 devices only.");

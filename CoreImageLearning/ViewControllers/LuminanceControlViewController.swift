@@ -130,7 +130,6 @@ class LuminanceControlViewController: BaseViewController {
             }, arguments: [srcCIImage!, delta]);
             if (dst != nil && MetalManager.shared.mtDevice != nil) {
                 self.metalKitView.render(image: dst!, context: self.ciContext, device: MetalManager.shared.mtDevice!);
-                self.metalKitView.setNeedsDisplay();
             }
         }
     }

@@ -78,9 +78,7 @@ class FilterListCollectionViewCell: UICollectionViewCell {
         self.context = context;
         self.device = device;
         if (image != nil) {
-//            imageView.isHidden = false;
             imageView.render(image: image!, context: context!, device: device!);
-            imageView.setNeedsDisplay();
         }
     }
 }

@@ -64,6 +64,35 @@ class FilterListViewController: BaseViewController {
                 let optCIImage = filter?.outputImage;
                 completionBlock(filterName, optCIImage!);
                 break;
+            case .CIDiscBlur:
+                let filter = CIFilter.init(name: filterName.rawValue, parameters: [kCIInputImageKey: ciImage as Any, kCIInputRadiusKey: 10.0]);
+                let optCIImage = filter?.outputImage;
+                completionBlock(filterName, optCIImage!);
+                break;
+            case .CIGaussianBlur:
+                let filter = CIFilter.init(name: filterName.rawValue, parameters: [kCIInputImageKey: ciImage as Any, kCIInputRadiusKey: 10.0]);
+                let optCIImage = filter?.outputImage;
+                completionBlock(filterName, optCIImage!);
+                break;
+            case .CIMaskedVariableBlur:
+                let maskedUIImage = UIImage.init(named: "maskedBlurMask");
+                DispatchQueue.main.async {
+                    UIGraphicsBeginImageContextWithOptions(srcImage.size, false, 1);
+                    maskedUIImage?.draw(in: CGRect.init(x: 0, y: 0, width: srcImage.size.width, height: srcImage.size.height));
+                    let cgimage = UIGraphicsGetImageFromCurrentImageContext()?.cgImage;
+                    UIGraphicsEndImageContext();
+                    let maskedImage = CIImage.init(cgImage: cgimage!);
+                    DispatchQueue.global().async {
+                        let filter = CIFilter.init(name: filterName.rawValue, parameters: [
+                            kCIInputImageKey: ciImage as Any,
+                            kCIInputRadiusKey: 100.0,
+                            "inputMask": maskedImage as Any
+                            ]);
+                        let optCIImage = filter?.outputImage;
+                        completionBlock(filterName, optCIImage!);
+                    }
+                }
+                break;
             default:
                 completionBlock(filterName, nil);
                 break;
@@ -92,8 +121,8 @@ extension FilterListViewController: UICollectionViewDataSource {
         } else {
             cell?.config(image: nil, title: filterName.rawValue, context: ciContext, device:nil);
             self.getFilteredImage(filterName: filterName, srcImage: srcImage, completionBlock: { [weak cell, weak self] (filterName:FilterNames, filterImage:CIImage?) in
-                if filterImage != nil {
-                    self?.cachedFilterImageDict[filterName] = filterImage;
+                if filterImage != nil && self != nil {
+                    self!.cachedFilterImageDict[filterName] = filterImage;
                 }
                 DispatchQueue.main.async {
                     cell?.config(image: filterImage, title: filterName.rawValue, context: (self?.ciContext)!, device: MetalManager.shared.mtDevice!);
