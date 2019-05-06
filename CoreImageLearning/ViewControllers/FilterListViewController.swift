@@ -60,17 +60,23 @@ class FilterListViewController: BaseViewController {
                 completionBlock(filterName, ciImage!);
                 break;
             case .CIBoxBlur:
-                let filter = CIFilter.init(name: filterName.rawValue, parameters: [kCIInputImageKey: ciImage as Any, kCIInputRadiusKey: 20.0]);
+                let filter = CIFilter.init(name: filterName.rawValue, parameters: [
+                    kCIInputImageKey: ciImage as Any,
+                    kCIInputRadiusKey: 20.0]);
                 let optCIImage = filter?.outputImage;
                 completionBlock(filterName, optCIImage!);
                 break;
             case .CIDiscBlur:
-                let filter = CIFilter.init(name: filterName.rawValue, parameters: [kCIInputImageKey: ciImage as Any, kCIInputRadiusKey: 10.0]);
+                let filter = CIFilter.init(name: filterName.rawValue, parameters: [
+                    kCIInputImageKey: ciImage as Any,
+                    kCIInputRadiusKey: 10.0]);
                 let optCIImage = filter?.outputImage;
                 completionBlock(filterName, optCIImage!);
                 break;
             case .CIGaussianBlur:
-                let filter = CIFilter.init(name: filterName.rawValue, parameters: [kCIInputImageKey: ciImage as Any, kCIInputRadiusKey: 10.0]);
+                let filter = CIFilter.init(name: filterName.rawValue, parameters: [
+                    kCIInputImageKey: ciImage as Any,
+                    kCIInputRadiusKey: 10.0]);
                 let optCIImage = filter?.outputImage;
                 completionBlock(filterName, optCIImage!);
                 break;
@@ -92,6 +98,141 @@ class FilterListViewController: BaseViewController {
                         completionBlock(filterName, optCIImage!);
                     }
                 }
+                break;
+            case .CIMedianFilter:
+                let filter = CIFilter.init(name: filterName.rawValue, parameters: [
+                    kCIInputImageKey: ciImage as Any]);
+                let optCIImage = filter?.outputImage;
+                completionBlock(filterName, optCIImage!);
+                break;
+            case .CIMotionBlur:
+                let filter = CIFilter.init(name: filterName.rawValue, parameters: [
+                    kCIInputImageKey: ciImage as Any,
+                    kCIInputRadiusKey: 40.0,
+                    kCIInputAngleKey: 0]);
+                let optCIImage = filter?.outputImage;
+                completionBlock(filterName, optCIImage!);
+                break;
+            case .CINoiseReduction:
+                let filter = CIFilter.init(name: filterName.rawValue, parameters: [
+                    kCIInputImageKey: ciImage as Any,
+                    "inputNoiseLevel": 0.02,
+                    kCIInputSharpnessKey: 0.40]);
+                let optCIImage = filter?.outputImage;
+                completionBlock(filterName, optCIImage!);
+                break;
+            case .CIZoomBlur:
+                let filter = CIFilter.init(name: filterName.rawValue, parameters: [
+                    kCIInputImageKey: ciImage as Any,
+                    "inputCenter": CIVector.init(x: 150, y: 150),
+                    "inputAmount": 10.0]);
+                let optCIImage = filter?.outputImage;
+                completionBlock(filterName, optCIImage!);
+                break;
+            case .CIColorClamp:
+                let filter = CIFilter.init(name: filterName.rawValue, parameters: [
+                    kCIInputImageKey: ciImage as Any,
+                    "inputMinComponents": CIVector.init(x: 0, y: 0, z: 0, w: 0),
+                    "inputMaxComponents": CIVector.init(x: 1, y: 1, z: 1, w: 1)]);
+                let optCIImage = filter?.outputImage;
+                completionBlock(filterName, optCIImage!);
+                break;
+            case .CIColorControls:
+                let filter = CIFilter.init(name: filterName.rawValue, parameters: [
+                    kCIInputImageKey: ciImage as Any,
+                    "inputSaturation": 3.0,
+//                    "inputBrightness": 1.0,
+                    "inputContrast": 1.0]);
+                let optCIImage = filter?.outputImage;
+                completionBlock(filterName, optCIImage!);
+                break;
+            case .CIColorMatrix:
+                let filter = CIFilter.init(name: filterName.rawValue, parameters: [
+                    kCIInputImageKey: ciImage as Any,
+                    "inputRVector": CIVector.init(x: 1, y: 0, z: 0, w: 0),
+                    "inputGVector": CIVector.init(x: 0, y: 1, z: 0, w: 0),
+                    "inputBVector": CIVector.init(x: 0, y: 0, z: 1.5, w: 0),
+                    "inputAVector": CIVector.init(x: 0, y: 0, z: 0, w: 1),
+                    "inputBiasVector": CIVector.init(x: 0.5, y: 0, z: 0.5, w: 0)]);
+                let optCIImage = filter?.outputImage;
+                completionBlock(filterName, optCIImage!);
+                break;
+            case .CIColorPolynomial:
+                let filter = CIFilter.init(name: filterName.rawValue, parameters: [
+                    kCIInputImageKey: ciImage as Any,
+                    "inputRedCoefficients": CIVector.init(x: 0, y: 0, z: 0, w: 0.4),
+                    "inputGreenCoefficients": CIVector.init(x: 0, y: 0, z: 0.5, w: 0.8),
+                    "inputBlueCoefficients": CIVector.init(x: 0, y: 0, z: 0.5, w: 1),
+                    "inputAlphaCoefficients": CIVector.init(x: 0, y: 1, z: 1, w: 1)]);
+                let optCIImage = filter?.outputImage;
+                completionBlock(filterName, optCIImage!);
+                break;
+            case .CIExposureAdjust:
+                let filter = CIFilter.init(name: filterName.rawValue, parameters: [
+                    kCIInputImageKey: ciImage as Any,
+                    "inputEV": 0.5]);
+                let optCIImage = filter?.outputImage;
+                completionBlock(filterName, optCIImage!);
+                break;
+            case .CIGammaAdjust:
+                let filter = CIFilter.init(name: filterName.rawValue, parameters: [
+                    kCIInputImageKey: ciImage as Any,
+                    "inputPower": 0.75]);
+                let optCIImage = filter?.outputImage;
+                completionBlock(filterName, optCIImage!);
+                break;
+            case .CIHueAdjust:
+                let filter = CIFilter.init(name: filterName.rawValue, parameters: [
+                    kCIInputImageKey: ciImage as Any,
+                    "inputAngle": 0]);
+                let optCIImage = filter?.outputImage;
+                completionBlock(filterName, optCIImage!);
+                break;
+            case .CILinearToSRGBToneCurve:
+                let filter = CIFilter.init(name: filterName.rawValue, parameters: [
+                    kCIInputImageKey: ciImage as Any]);
+                let optCIImage = filter?.outputImage;
+                completionBlock(filterName, optCIImage!);
+                break;
+            case .CISRGBToneCurveToLinear:
+                let filter = CIFilter.init(name: filterName.rawValue, parameters: [
+                    kCIInputImageKey: ciImage as Any]);
+                let optCIImage = filter?.outputImage;
+                completionBlock(filterName, optCIImage!);
+                break;
+            case .CITemperatureAndTint:
+                let filter = CIFilter.init(name: filterName.rawValue, parameters: [
+                    kCIInputImageKey: ciImage as Any,
+                    "inputNeutral": CIVector.init(x: 6500, y: 0),
+                    "inputTargetNeutral": CIVector.init(x: 6500, y: 0)]);
+                let optCIImage = filter?.outputImage;
+                completionBlock(filterName, optCIImage!);
+                break;
+            case .CIToneCurve:
+                let filter = CIFilter.init(name: filterName.rawValue, parameters: [
+                    kCIInputImageKey: ciImage as Any,
+                    "inputPoint0": CIVector.init(x: 0, y: 0),
+                    "inputPoint1": CIVector.init(x: 0.25, y: 0.25),
+                    "inputPoint2": CIVector.init(x: 0.5, y: 0.5),
+                    "inputPoint3": CIVector.init(x: 0.75, y: 0.75),
+                    "inputPoint4": CIVector.init(x: 1, y: 1)]);
+                let optCIImage = filter?.outputImage;
+                completionBlock(filterName, optCIImage!);
+                break;
+            case .CIVibrance:
+                let filter = CIFilter.init(name: filterName.rawValue, parameters: [
+                    kCIInputImageKey: ciImage as Any,
+                    "inputAmount": 2.0]);
+                let optCIImage = filter?.outputImage;
+                completionBlock(filterName, optCIImage!);
+                break;
+            case .CIWhitePointAdjust:
+                let whilePointColor = UIColor.yellow.withAlphaComponent(0.3);
+                let filter = CIFilter.init(name: filterName.rawValue, parameters: [
+                    kCIInputImageKey: ciImage as Any,
+                    "inputColor": CIColor.init(color: whilePointColor)]);
+                let optCIImage = filter?.outputImage;
+                completionBlock(filterName, optCIImage!);
                 break;
             default:
                 completionBlock(filterName, nil);
